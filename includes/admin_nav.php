@@ -40,35 +40,35 @@ $_navPage = basename($_SERVER['PHP_SELF']);
 <div class="an-wrap">
   <div class="an-top">
     <!-- หน้าหลัก -->
-    <a href="/elearning/admin/index.php"
+    <a href="/admin/index.php"
        class="<?=$_navPage==='index.php'?'active':''?>">🏫 หลักสูตร</a>
 
     <!-- ถ้าอยู่ใน course_manager ให้แสดง tab -->
     <?php if ($_navPage==='course_manager.php' && $_navCid): ?>
     <div class="an-sep"></div>
-    <a href="/elearning/admin/course_manager.php?cid=<?=$_navCid?>&tab=lessons"
+    <a href="/admin/course_manager.php?cid=<?=$_navCid?>&tab=lessons"
        class="<?=($_GET['tab']??'')==='lessons'?'active':''?>">📚 บทเรียน</a>
-    <a href="/elearning/admin/course_manager.php?cid=<?=$_navCid?>&tab=quiz"
+    <a href="/admin/course_manager.php?cid=<?=$_navCid?>&tab=quiz"
        class="<?=($_GET['tab']??'')==='quiz'?'active':''?>">📝 ข้อสอบ</a>
-    <a href="/elearning/admin/course_manager.php?cid=<?=$_navCid?>&tab=dashboard"
+    <a href="/admin/course_manager.php?cid=<?=$_navCid?>&tab=dashboard"
        class="<?=($_GET['tab']??'')==='dashboard'?'active':''?>">📈 รายงาน</a>
     <div class="an-sep"></div>
     <?php endif; ?>
 
     <!-- เมนูทั่วไป -->
-    <a href="/elearning/admin/users.php"
+    <a href="/admin/users.php"
        class="<?=$_navPage==='users.php'?'active':''?>">👥 ผู้ใช้</a>
-    <a href="/elearning/admin/rewards.php"
+    <a href="/admin/rewards.php"
        class="<?=$_navPage==='rewards.php'?'active':''?>">🏆 รางวัล</a>
-    <a href="/elearning/admin/announcements.php"
+    <a href="/admin/announcements.php"
        class="<?=$_navPage==='announcements.php'?'active':''?>">📢 ประกาศ</a>
-    <a href="/elearning/admin/quiz_admin.php"
+    <a href="/admin/quiz_admin.php"
        class="<?=$_navPage==='quiz_admin.php'?'active':''?>">🧪 ทดลองทำ</a>
 
     <!-- อันตราย + setting ชิดขวา -->
     <div class="an-sep"></div>
-    <a href="/elearning/admin/reset.php"   class="danger <?=$_navPage==='reset.php'  ?'active':''?>">🗑 ล้างข้อมูล</a>
-    <a href="/elearning/admin/profile.php" class="muted  <?=$_navPage==='profile.php'?'active':''?>" style="margin-left:auto;">🔑 รหัสผ่าน</a>
+    <a href="/admin/reset.php"   class="danger <?=$_navPage==='reset.php'  ?'active':''?>">🗑 ล้างข้อมูล</a>
+    <a href="/admin/profile.php" class="muted  <?=$_navPage==='profile.php'?'active':''?>" style="margin-left:auto;">🔑 รหัสผ่าน</a>
   </div>
 
   <!-- แถวหลักสูตร -->
@@ -76,7 +76,7 @@ $_navPage = basename($_SERVER['PHP_SELF']);
   <div class="an-courses">
     <span>📂 เลือกหลักสูตร:</span>
     <?php foreach ($_navCourses as $nc): ?>
-    <a href="/elearning/admin/course_manager.php?cid=<?=$nc['id']?>&tab=lessons"
+    <a href="/admin/course_manager.php?cid=<?=$nc['id']?>&tab=lessons"
        class="<?=$_navCid==$nc['id']?'active':''?>">
       <?=$nc['thumbnail']?> <?=htmlspecialchars(mb_strimwidth($nc['title'],0,20,'...'))?>
     </a>

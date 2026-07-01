@@ -3,14 +3,14 @@ require_once 'includes/config.php';
 requireLogin();
 
 $cid = (int)($_GET['id'] ?? 0);
-if (!$cid) redirect('/elearning/index.php');
+if (!$cid) redirect('/index.php');
 
 $course = $conn->query("SELECT * FROM courses WHERE id=$cid AND is_active=1")->fetch_assoc();
-if (!$course) redirect('/elearning/index.php');
+if (!$course) redirect('/index.php');
 
 $uid = $_SESSION['user_id'];
 $pre = $conn->query("SELECT id FROM quiz_results WHERE user_id=$uid AND course_id=$cid AND quiz_type='pre' LIMIT 1")->fetch_assoc();
-if ($pre) redirect("/elearning/lessons.php?course_id=$cid");
+if ($pre) redirect("/lessons.php?course_id=$cid");
 
 $lessonCnt = (int)$conn->query("SELECT COUNT(*) c FROM lessons WHERE course_id=$cid AND is_active=1")->fetch_assoc()['c'];
 $preCnt    = (int)$conn->query("SELECT COUNT(*) c FROM questions WHERE course_id=$cid AND quiz_type='pre' AND is_active=1")->fetch_assoc()['c'];

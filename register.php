@@ -1,6 +1,6 @@
 <?php
 require_once 'includes/config.php';
-if (!empty($_SESSION['user_id'])) redirect('/elearning/index.php');
+if (!empty($_SESSION['user_id'])) redirect('/index.php');
 
 $error = ''; $success = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

@@ -43,21 +43,8 @@ if ($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['answers'])) {
 
 $pageTitle = 'ทดลองทำข้อสอบ (Admin)';
 require_once '../includes/header.php';
+require_once '../includes/admin_nav.php';
 ?>
-
-<div class="admin-nav">
-  <a href="index.php">📊 หน้าหลัก</a>
-  <a href="dashboard.php">📈 สรุปผล</a>
-  <a href="courses.php">🏫 หลักสูตร</a>
-  <a href="lessons.php">📚 บทเรียน</a>
-  <a href="questions.php">📝 ข้อสอบ</a>
-  <a href="quiz_admin.php" class="active">🧪 ทดลองทำ</a>
-  <a href="announcements.php">📢 ประกาศ</a>
-  <a href="users.php">👥 ผู้ใช้</a>
-  <a href="rewards.php">🏆 รางวัล</a>
-  <a href="reset.php" style="background:#ffebee;color:#c62828;border-color:#ef9a9a;">🗑 ล้างข้อมูล</a>
-  <a href="profile.php" style="margin-left:auto;background:#e3f2fd;color:#0d47a1;border-color:#90caf9;">🔑 รหัสผ่าน</a>
-</div>
 
 <div class="alert alert-info" style="margin-bottom:16px;">
   🧪 <strong>Admin โหมดทดสอบ</strong> — ไม่บันทึกลง DB ไม่นับสถิติ เห็นเฉลยหลังส่ง

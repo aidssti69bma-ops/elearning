@@ -3,14 +3,14 @@ require_once 'includes/config.php';
 requireLogin();
 
 $cid = (int)($_GET['course_id'] ?? 0);
-if (!$cid) redirect('/elearning/index.php');
+if (!$cid) redirect('/index.php');
 
 $uid    = $_SESSION['user_id'];
 $course = $conn->query("SELECT * FROM courses WHERE id=$cid AND is_active=1")->fetch_assoc();
-if (!$course) redirect('/elearning/index.php');
+if (!$course) redirect('/index.php');
 
 $pre = $conn->query("SELECT id FROM quiz_results WHERE user_id=$uid AND course_id=$cid AND quiz_type='pre' LIMIT 1")->fetch_assoc();
-if (!$pre) redirect("/elearning/course.php?id=$cid");
+if (!$pre) redirect("/course.php?id=$cid");
 
 $lessons = $conn->query("SELECT * FROM lessons WHERE course_id=$cid AND is_active=1 ORDER BY sort_order")->fetch_all(MYSQLI_ASSOC);
 $lid     = isset($_GET['id']) ? (int)$_GET['id'] : 0;
@@ -119,9 +119,9 @@ require_once 'includes/header.php';
 
       <?php elseif ($current['type']==='pdf'): ?>
         <div style="margin-bottom:12px;">
-          <a href="/elearning/<?= htmlspecialchars(trim($current['content_url'])) ?>" target="_blank" class="btn btn-outline">📥 เปิด PDF</a>
+          <a href="/<?= htmlspecialchars(trim($current['content_url'])) ?>" target="_blank" class="btn btn-outline">📥 เปิด PDF</a>
         </div>
-        <iframe src="/elearning/<?= htmlspecialchars(trim($current['content_url'])) ?>"
+        <iframe src="/<?= htmlspecialchars(trim($current['content_url'])) ?>"
           style="width:100%;height:520px;border:1px solid #c8e6c9;border-radius:6px;"></iframe>
 
       <?php else: ?>

@@ -3,13 +3,13 @@ require_once 'includes/config.php';
 requireLogin();
 
 $cid    = (int)($_GET['course_id'] ?? 0);
-if (!$cid) redirect('/elearning/index.php');
+if (!$cid) redirect('/index.php');
 $uid    = $_SESSION['user_id'];
 $course = $conn->query("SELECT * FROM courses WHERE id=$cid")->fetch_assoc();
-if (!$course) redirect('/elearning/index.php');
+if (!$course) redirect('/index.php');
 
 $passed  = $conn->query("SELECT id FROM quiz_results WHERE user_id=$uid AND course_id=$cid AND quiz_type='post' AND passed=1 LIMIT 1")->fetch_assoc();
-if (!$passed) redirect('/elearning/index.php');
+if (!$passed) redirect('/index.php');
 
 $claimed = $conn->query("SELECT id,claimed_at FROM reward_claims WHERE user_id=$uid AND course_id=$cid LIMIT 1")->fetch_assoc();
 

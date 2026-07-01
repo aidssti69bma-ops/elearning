@@ -1,6 +1,6 @@
 <?php
 require_once 'includes/config.php';
-if (!empty($_SESSION['user_id'])) redirect('/elearning/index.php');
+if (!empty($_SESSION['user_id'])) redirect('/index.php');
 
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['name']    = $user['name'];
             $_SESSION['role']    = $user['role'];
-            redirect('/elearning/index.php');
+            redirect('/index.php');
         } else {
             $error = 'อีเมลหรือรหัสผ่านไม่ถูกต้อง';
         }

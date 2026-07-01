@@ -2,28 +2,28 @@
 require_once 'includes/config.php';
 requireLogin();
 
-if (!empty($_SESSION['role']) && $_SESSION['role']==='admin') redirect('/elearning/admin/quiz_admin.php');
+if (!empty($_SESSION['role']) && $_SESSION['role']==='admin') redirect('/admin/quiz_admin.php');
 
 $cid  = (int)($_GET['course_id'] ?? $_POST['course_id'] ?? 0);
 $type = in_array($_GET['type']??$_POST['type']??'', ['pre','post']) ? ($_GET['type']??$_POST['type']) : 'pre';
-if (!$cid) redirect('/elearning/index.php');
+if (!$cid) redirect('/index.php');
 
 $uid    = $_SESSION['user_id'];
 $course = $conn->query("SELECT * FROM courses WHERE id=$cid AND is_active=1")->fetch_assoc();
-if (!$course) redirect('/elearning/index.php');
+if (!$course) redirect('/index.php');
 
 $passThreshold = $course['pass_score'];
 
 // ตรวจสิทธิ์
 if ($type==='pre') {
     $done = $conn->query("SELECT id FROM quiz_results WHERE user_id=$uid AND course_id=$cid AND quiz_type='pre' LIMIT 1")->fetch_assoc();
-    if ($done) redirect("/elearning/lessons.php?course_id=$cid");
+    if ($done) redirect("/lessons.php?course_id=$cid");
 } else {
     $pre = $conn->query("SELECT id FROM quiz_results WHERE user_id=$uid AND course_id=$cid AND quiz_type='pre' LIMIT 1")->fetch_assoc();
-    if (!$pre) redirect("/elearning/course.php?id=$cid");
+    if (!$pre) redirect("/course.php?id=$cid");
     $postCount = (int)$conn->query("SELECT COUNT(*) c FROM quiz_results WHERE user_id=$uid AND course_id=$cid AND quiz_type='post'")->fetch_assoc()['c'];
     $passed    = $conn->query("SELECT id FROM quiz_results WHERE user_id=$uid AND course_id=$cid AND quiz_type='post' AND passed=1 LIMIT 1")->fetch_assoc();
-    if ($passed || $postCount >= POST_MAX_ATTEMPTS) redirect("/elearning/lessons.php?course_id=$cid");
+    if ($passed || $postCount >= POST_MAX_ATTEMPTS) redirect("/lessons.php?course_id=$cid");
 }
 
 // ดึงข้อสอบ shared (ใช้ชุดเดียวกันทั้ง pre และ post)
