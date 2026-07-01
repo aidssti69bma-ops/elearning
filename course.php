@@ -3,18 +3,18 @@ require_once 'includes/config.php';
 requireLogin();
 
 $cid = (int)($_GET['id'] ?? 0);
-if (!$cid) redirect('/index.php');
+if (!$cid) redirect('/elearning/index.php');
 
 $course = $conn->query("SELECT * FROM courses WHERE id=$cid AND is_active=1")->fetch_assoc();
-if (!$course) redirect('/index.php');
+if (!$course) redirect('/elearning/index.php');
 
 $uid = $_SESSION['user_id'];
 $pre = $conn->query("SELECT id FROM quiz_results WHERE user_id=$uid AND course_id=$cid AND quiz_type='pre' LIMIT 1")->fetch_assoc();
-if ($pre) redirect("/lessons.php?course_id=$cid");
+if ($pre) redirect("/elearning/lessons.php?course_id=$cid");
 
 $lessonCnt = (int)$conn->query("SELECT COUNT(*) c FROM lessons WHERE course_id=$cid AND is_active=1")->fetch_assoc()['c'];
-$preCnt    = (int)$conn->query("SELECT COUNT(*) c FROM questions WHERE course_id=$cid AND quiz_type='pre' AND is_active=1")->fetch_assoc()['c'];
-$postCnt   = (int)$conn->query("SELECT COUNT(*) c FROM questions WHERE course_id=$cid AND quiz_type='post' AND is_active=1")->fetch_assoc()['c'];
+$preCnt    = (int)$conn->query("SELECT COUNT(*) c FROM questions WHERE course_id=$cid AND is_active=1")->fetch_assoc()['c'];
+$postCnt   = $preCnt;
 
 // ประกาศของห้องนี้
 $announcements = $conn->query("SELECT * FROM announcements WHERE (course_id=$cid OR course_id IS NULL) AND is_active=1 ORDER BY is_pinned DESC, created_at DESC LIMIT 5")->fetch_all(MYSQLI_ASSOC);
