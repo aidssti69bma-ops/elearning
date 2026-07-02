@@ -3,11 +3,11 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title><?=htmlspecialchars($pageTitle)?> | E-Learning</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/elearning/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/style.css">
 </head><body>
 <nav class="navbar"><div class="navbar-inner">
   <div class="navbar-brand">
-    <a class="brand" href="/elearning/index.php">🌿 ระบบ E-Learning</a>
+    <a class="brand" href="/index.php">🌿 ระบบ E-Learning</a>
     <div class="brand-sub">กลุ่มงานโรคเอดส์และโรคติดต่อทางเพศสัมพันธ์<br>สำนักงานโรคติดต่อทางสาธารณสุข สำนักอนามัย กรุงเทพมหานคร</div>
   </div>
   <button class="nav-toggle" id="navToggle">☰</button>
