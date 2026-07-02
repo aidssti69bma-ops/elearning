@@ -80,11 +80,11 @@ $top10 = $conn->query("
     SELECT u.name, u.position, u.department,
            MAX(qr.score/qr.total*100) AS best_pct,
            MAX(qr.score) AS best_score,
-           qr.total
+           MAX(qr.total) AS total
     FROM quiz_results qr
     JOIN users u ON u.id = qr.user_id
     WHERE qr.course_id=$cid AND qr.quiz_type='post' AND u.role='user'
-    GROUP BY qr.user_id
+    GROUP BY qr.user_id, u.name, u.position, u.department
     ORDER BY best_pct DESC, best_score DESC
     LIMIT 10
 ")->fetch_all(MYSQLI_ASSOC);
