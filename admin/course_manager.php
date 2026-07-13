@@ -140,6 +140,23 @@ $users=$conn->query("SELECT u.id,u.name,u.position,u.department,u.phone,
     (SELECT id FROM reward_claims WHERE user_id=u.id AND course_id=$cid LIMIT 1) claimed
     FROM users u WHERE u.role='user' ORDER BY u.name")->fetch_all(MYSQLI_ASSOC);
 
+// ===== CSV Export (ต้องอยู่ก่อน header.php เสมอ ไม่งั้น header() ใช้ไม่ได้) =====
+if (isset($_GET['export'])) {
+    header('Content-Type: text/csv; charset=utf-8');
+    header('Content-Disposition: attachment; filename="'.mb_substr($course['title'],0,20).'_'.date('Ymd').'.csv"');
+    echo "\xEF\xBB\xBF";
+    $out = fopen('php://output', 'w');
+    fputcsv($out, ['ชื่อ','ตำแหน่ง','กลุ่มงาน','โทร','Pre %','Post %','ครั้ง','สถานะ','รับรางวัล']);
+    foreach ($users as $u) {
+        $pp = ($u['pre_score']!==null  && $u['pre_total'])  ? round($u['pre_score']/$u['pre_total']*100)   : '';
+        $qp = ($u['post_score']!==null && $u['post_total']) ? round($u['post_score']/$u['post_total']*100) : '';
+        $st = $qp!=='' ? 'ผ่าน' : ($u['post_count']>0 ? 'ยังไม่ผ่าน' : 'ยังไม่ทำ');
+        fputcsv($out, [$u['name'], $u['position']??'', $u['department']??'', $u['phone']??'', $pp, $qp, $u['post_count'], $st, $u['claimed']?'รับแล้ว':'']);
+    }
+    fclose($out);
+    exit;
+}
+
 $flashMsg = match($_GET['msg']??'') {
     'lesson_added'=>'<div class="alert alert-success">✅ เพิ่มบทเรียนแล้ว</div>',
     'lesson_edited'=>'<div class="alert alert-success">✅ แก้ไขบทเรียนแล้ว</div>',
@@ -659,21 +676,5 @@ if(ytIn&&ytIn.value)previewYT(ytIn.value);
 </script>
 
 <?php
-// Handle CSV export in dashboard tab
-if (isset($_GET['export'])) {
-    ob_end_clean();
-    header('Content-Type: text/csv; charset=utf-8');
-    header('Content-Disposition: attachment; filename="'.mb_substr($course['title'],0,20).'_'.date('Ymd').'.csv"');
-    echo "\xEF\xBB\xBF";
-    $out=fopen('php://output','w');
-    fputcsv($out,['ชื่อ','ตำแหน่ง','กลุ่มงาน','โทร','Pre %','Post %','ครั้ง','สถานะ','รับรางวัล']);
-    foreach($users as $u){
-        $pp=($u['pre_score']!==null&&$u['pre_total'])?round($u['pre_score']/$u['pre_total']*100):'';
-        $qp=($u['post_score']!==null&&$u['post_total'])?round($u['post_score']/$u['post_total']*100):'';
-        $st=$qp!==''?'ผ่าน':($u['post_count']>0?'ยังไม่ผ่าน':'ยังไม่ทำ');
-        fputcsv($out,[$u['name'],$u['position']??'',$u['department']??'',$u['phone']??'',$pp,$qp,$u['post_count'],$st,$u['claimed']?'รับแล้ว':'']);
-    }
-    fclose($out); exit;
-}
 require_once '../includes/footer.php';
 ?>

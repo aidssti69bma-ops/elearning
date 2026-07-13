@@ -5,7 +5,7 @@ requireAdmin();
 
 // รายชื่อที่ claim แล้ว
 $claimed = $conn->query("
-    SELECT u.name, u.email, qr.score, qr.total,
+    SELECT u.name, u.position, u.department, qr.score, qr.total,
            ROUND(qr.score/qr.total*100) AS pct,
            qr.attempt, rc.claimed_at
     FROM reward_claims rc
@@ -16,7 +16,7 @@ $claimed = $conn->query("
 
 // รายชื่อผ่าน 80% แต่ยังไม่ claim
 $notClaimed = $conn->query("
-    SELECT u.name, u.email, qr.score, qr.total,
+    SELECT u.name, u.position, u.department, qr.score, qr.total,
            ROUND(qr.score/qr.total*100) AS pct, qr.attempt
     FROM quiz_results qr
     JOIN users u ON u.id = qr.user_id
@@ -30,9 +30,6 @@ require_once '../includes/header.php';
 require_once '../includes/admin_nav.php';
 ?>
 
-<?php
-?>
-
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
   <h2>🏆 รายชื่อรับรางวัล — VCT Day 1 ก.ค. 69</h2>
   <button onclick="window.print()" class="btn btn-primary">🖨 พิมพ์รายชื่อ</button>
@@ -42,13 +39,14 @@ require_once '../includes/admin_nav.php';
   <h2 style="font-size:16px;">✅ ลงทะเบียนรับรางวัลแล้ว (<?= count($claimed) ?> คน)</h2>
   <?php if ($claimed): ?>
   <div class="table-wrap"><table>
-    <thead><tr><th>#</th><th>ชื่อ</th><th>อีเมล</th><th>คะแนน</th><th>%</th><th>ครั้งที่</th><th>ลงทะเบียนเมื่อ</th></tr></thead>
+    <thead><tr><th>#</th><th>ชื่อ</th><th>ตำแหน่ง</th><th>กลุ่มงาน</th><th>คะแนน</th><th>%</th><th>ครั้งที่</th><th>ลงทะเบียนเมื่อ</th></tr></thead>
     <tbody>
     <?php foreach ($claimed as $i => $r): ?>
     <tr>
       <td><?= $i+1 ?></td>
       <td><?= htmlspecialchars($r['name']) ?></td>
-      <td><?= htmlspecialchars($r['email']) ?></td>
+      <td><?= htmlspecialchars($r['position'] ?? '—') ?></td>
+      <td><?= htmlspecialchars($r['department'] ?? '—') ?></td>
       <td><?= $r['score'] ?>/<?= $r['total'] ?></td>
       <td><strong><?= $r['pct'] ?>%</strong></td>
       <td><?= $r['attempt'] ?></td>
@@ -66,13 +64,14 @@ require_once '../includes/admin_nav.php';
 <div class="card">
   <h2 style="font-size:16px;color:#f9a825;">⏳ ผ่านเกณฑ์แต่ยังไม่ลงทะเบียน (<?= count($notClaimed) ?> คน)</h2>
   <div class="table-wrap"><table>
-    <thead><tr><th>#</th><th>ชื่อ</th><th>อีเมล</th><th>คะแนน</th><th>%</th></tr></thead>
+    <thead><tr><th>#</th><th>ชื่อ</th><th>ตำแหน่ง</th><th>กลุ่มงาน</th><th>คะแนน</th><th>%</th></tr></thead>
     <tbody>
     <?php foreach ($notClaimed as $i => $r): ?>
     <tr>
       <td><?= $i+1 ?></td>
       <td><?= htmlspecialchars($r['name']) ?></td>
-      <td><?= htmlspecialchars($r['email']) ?></td>
+      <td><?= htmlspecialchars($r['position'] ?? '—') ?></td>
+      <td><?= htmlspecialchars($r['department'] ?? '—') ?></td>
       <td><?= $r['score'] ?>/<?= $r['total'] ?></td>
       <td><strong><?= $r['pct'] ?>%</strong></td>
     </tr>
@@ -84,7 +83,7 @@ require_once '../includes/admin_nav.php';
 
 <style>
 @media print {
-  .navbar, .footer, button, .btn { display:none!important; }
+  .navbar, .footer, button, .btn, .an-wrap { display:none!important; }
   .card { box-shadow:none; border:1px solid #ddd; }
 }
 </style>
